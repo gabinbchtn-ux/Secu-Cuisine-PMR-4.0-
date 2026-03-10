@@ -2,87 +2,289 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Site de partage</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secu-Cuisine-PMR-4.0 | Sécurité Intelligente</title>
+    <style>
+        :root {
+            --primary-red: #D32F2F;
+            --primary-orange: #FF6D00;
+            --dark-bg: #1a1a1a;
+            --light-text: #f5f5f5;
+            --card-bg: #2d2d2d;
+            --gradient-main: linear-gradient(135deg, var(--primary-red), var(--primary-orange));
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+        }
+
+        /* Header / Hero Section */
+        header {
+            background: var(--gradient-main);
+            padding: 4rem 2rem;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(0,0,0,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: -3rem; /* Overlap effect */
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-top: 4px solid var(--primary-orange);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary-orange);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .card li::before {
+            content: "•";
+            color: var(--primary-red);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+        }
+
+        /* Architecture Section */
+        .architecture-section {
+            margin-top: 4rem;
+            background: #252525;
+            padding: 3rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary-red);
+        }
+
+        .arch-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .mode-box {
+            flex: 1;
+            min-width: 300px;
+            background: #333;
+            padding: 2rem;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .mode-box.firebase {
+            border: 2px solid #4285F4; /* Google Blue */
+        }
+
+        .mode-box.local {
+            border: 2px solid var(--primary-orange);
+        }
+
+        .mode-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .firebase .mode-title { color: #4285F4; }
+        .local .mode-title { color: var(--primary-orange); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            margin-top: 4rem;
+            border-top: 1px solid #333;
+            color: #888;
+        }
+
+        .btn-github {
+            display: inline-block;
+            background: var(--gradient-main);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: opacity 0.3s;
+        }
+
+        .btn-github:hover {
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .features-grid { margin-top: 1rem; }
+        }
+    </style>
 </head>
 <body>
-<header>
-    <h1> Notre espace partagé</h1>
-    <button id="themeToggle">🌙 Mode sombre</button>
-</header>
 
-<main>
-    <!-- 1️⃣ Chat en temps réel (demo local) -->
-    <section class="card" id="chat">
-        <h2> Chat (local)</h2>
-        <div class="chat-window" id="chatWindow"></div>
-        <input type="text" id="chatInput" placeholder="Écrire un message…">
-        <button id="sendBtn">Envoyer</button>
-    </section>
+    <header>
+        <div class="badge">Version 4.0 • PMR Compatible</div>
+        <h1>Secu-Cuisine-PMR-4.0</h1>
+        <p class="subtitle">Le système de sécurité autonome conçu pour la protection des personnes à mobilité réduite en cuisine. Détection de chaleur, gaz et chutes.</p>
+    </header>
 
-    <!-- 2️⃣ Todo‑list partagée (local) -->
-    <section class="card" id="todo">
-        <h2> Todo‑list</h2>
-        <input type="text" id="newTask" placeholder="Nouvelle tâche…">
-        <button id="addTaskBtn">Ajouter</button>
-        <ul id="taskList"></ul>
-    </section>
+    <div class="container">
+        
+        <!-- Fonctionnalités Principales -->
+        <div class="features-grid">
+            <div class="card">
+                <h3>🔥 Détection Thermique</h3>
+                <ul>
+                    <li>Surveillance continue des plaques de cuisson.</li>
+                    <li>Détection de surchauffe anormale.</li>
+                    <li>Coupure automatique du gaz/électricité.</li>
+                    <li>Alerte visuelle et sonore immédiate.</li>
+                </ul>
+            </div>
 
-    <!-- 3️⃣ Bloc‑notes collaboratif (local) -->
-    <section class="card" id="notes">
-        <h2> Bloc‑notes</h2>
-        <div id="noteArea" contenteditable="true" spellcheck="false"></div>
-        <button id="saveNoteBtn">Enregistrer</button>
-    </section>
+            <div class="card">
+                <h3>👵 Optimisation PMR</h3>
+                <ul>
+                    <li>Interface vocale simplifiée (commande mains libres).</li>
+                    <li>Alertes haptiques pour les malentendants.</li>
+                    <li>Détection de chute ou d'immobilité prolongée au sol.</li>
+                    <li>Design ergonomique sans boutons complexes.</li>
+                </ul>
+            </div>
 
-    <!-- 4️⃣ Calendrier partagé (simple) -->
-    <section class="card" id="calendar">
-        <h2> Calendrier</h2>
-        <input type="date" id="eventDate">
-        <input type="text" id="eventDesc" placeholder="Description de l’événement">
-        <button id="addEventBtn">Ajouter</button>
-        <ul id="eventList"></ul>
-    </section>
+            <div class="card">
+                <h3>💨 Sécurité Gaz & Fumée</h3>
+                <ul>
+                    <li>Capteurs de monoxyde de carbone (CO).</li>
+                    <li>Détection de fuite de gaz naturel.</li>
+                    <li>Ventilation d'urgence activée automatiquement.</li>
+                    <li>Auto-test quotidien des capteurs.</li>
+                </ul>
+            </div>
+        </div>
 
-    <!-- 7️⃣ Compteur de jours depuis/until -->
-    <section class="card" id="counter">
-        <h2> Compteur de jours</h2>
-        <label for="targetDate">Date cible :</label>
-        <input type="date" id="targetDate">
-        <button id="calcBtn">Calculer</button>
-        <p id="result"></p>
-    </section>
+        <!-- Architecture Technique -->
+        <section class="architecture-section">
+            <h2 class="arch-title">Architecture & Connectivité</h2>
+            <p style="text-align: center; margin-bottom: 2rem; color: #ccc;">
+                L'appareil Secu-Cuisine-PMR-4.0 est conçu pour fonctionner dans deux modes distincts selon les besoins de l'utilisateur et la connectivité disponible.
+            </p>
 
-    <!-- 11️⃣ Barre de recherche interne -->
-    <section class="card" id="search">
-        <h2> Recherche interne</h2>
-        <input type="text" id="searchBox" placeholder="Rechercher dans notes, tâches, événements…">
-        <ul id="searchResults"></ul>
-    </section>
+            <div class="comparison">
+                <!-- Mode Sans Firebase (Local) -->
+                <div class="mode-box local">
+                    <span class="mode-title">Mode Local (Sans Firebase)</span>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem; color: #aaa;">Idéal pour la confidentialité maximale et la fiabilité hors-ligne.</p>
+                    <ul>
+                        <li><strong>Autonomie totale :</strong> Fonctionne même sans connexion Internet.</li>
+                        <li><strong>Réactivité instantanée :</strong> Traitement des données directement sur le microcontrôleur (ESP32/STM32).</li>
+                        <li><strong>Stockage local :</strong> Historique des événements enregistré sur carte SD interne.</li>
+                        <li><strong>Notifications locales :</strong> Sirène intégrée et notification SMS via module GSM dédié (si configuré).</li>
+                        <li><strong>Interface :</strong> Dashboard local accessible via WiFi direct (Hotspot de l'appareil).</li>
+                    </ul>
+                </div>
 
-    <!-- 12️⃣ Mode sombre / clair (toggle already in header) -->
-    <!-- 15️⃣ Section « À faire ce week‑end » (filtrage de la todo‑list) -->
-    <section class="card" id="weekend">
-        <h2> À faire ce week‑end</h2>
-        <button id="showWeekendBtn">Afficher les tâches du week‑end</button>
-        <ul id="weekendList"></ul>
-    </section>
+                <!-- Mode Avec Firebase -->
+                <div class="mode-box firebase">
+                    <span class="mode-title">Mode Cloud (Avec Firebase)</span>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem; color: #aaa;">Pour le suivi à distance, l'historique long terme et les alertes familiales.</p>
+                    <ul>
+                        <li><strong>Temps réel :</strong> Mise à jour de l'état de la cuisine sur l'application mobile instantanément.</li>
+                        <li><strong>Alertes multi-utilisateurs :</strong> Notification push envoyée aux proches et aux secours en cas d'incident.</li>
+                        <li><strong>Analyse historique :</strong> Graphiques de consommation et tendances de sécurité sur le cloud.</li>
+                        <li><strong>Contrôle à distance :</strong> Possibilité de couper le gaz à distance via l'interface web.</li>
+                        <li><strong>Mises à jour OTA :</strong> Mise à jour du firmware à distance via Firebase Remote Config.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-    <!-- 17️⃣ Statistiques d’usage (visites) -->
-    <section class="card" id="stats">
-        <h2> Statistiques d’usage</h2>
-        <p>Visites totales : <span id="visitCount">0</span></p>
-    </section>
-</main>
+    </div>
 
-<footer>
-    <small>Créé par Gabin Bucheton – aucune donnée n’est envoyée à un serveur.</small>
-</footer>
+    <footer>
+        <p>&copy; 2024 Projet Secu-Cuisine-PMR-4.0. Open Source sur GitHub.</p>
+        <p>Conçu pour la sécurité et l'autonomie des personnes vulnérables.</p>
+        <a href="https://github.com/votre-utilisateur/secu-cuisine-pmr" class="btn-github">Voir le code source sur GitHub</a>
+    </footer>
 
-<script src="app.js"></script>
 </body>
 </html>
-
-</body>
-</html>
-
