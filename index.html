@@ -3,356 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secu-Cuisine-PMR-4.0 | Sécurité Cuisine</title>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    
+    <title>Secu-Cuisine-PMR-4.0 | Sécurité Intelligente</title>
     <style>
         :root {
-            --primary-orange: #FF6B35;
-            --secondary-red: #D32F2F;
-            --dark-red: #B71C1C;
-            --light-orange: #FFF3E0;
-            --white: #FFFFFF;
-            --text-dark: #212121;
-            --gray: #757575;
+            --primary-red: #D32F2F;
+            --primary-orange: #FF6D00;
+            --dark-bg: #1a1a1a;
+            --light-text: #f5f5f5;
+            --card-bg: #2d2d2d;
+            --gradient-main: linear-gradient(135deg, var(--primary-red), var(--primary-orange));
         }
-        
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--light-orange) 0%, #FFE0B2 100%);
-            color: var(--text-dark);
+            background-color: var(--dark-bg);
+            color: var(--light-text);
             line-height: 1.6;
         }
-        
-        /* Header */
+
+        /* Header / Hero Section */
         header {
-            background: linear-gradient(135deg, var(--secondary-red) 0%, var(--dark-red) 100%);
-            color: var(--white);
-            padding: 2rem 1rem;
+            background: var(--gradient-main);
+            padding: 4rem 2rem;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
         }
-        
-        .device-badge {
-            display: inline-block;
-            background: var(--primary-orange);
-            color: var(--white);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
+
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        /* Main Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
-        /* Status Section */
-        .status-card {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-left: 5px solid var(--primary-orange);
-        }
-        
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            font-size: 3rem;
+            font-weight: 800;
             margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
-        
-        .status-dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--secondary-red);
-            animation: blink 1.5s infinite;
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        
-        .status-dot.active {
-            background: #4CAF50;
-            animation: none;
+
+        .badge {
+            display: inline-block;
+            background: rgba(0,0,0,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
         }
-        
+
         /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: -3rem; /* Overlap effect */
         }
-        
-        .feature-card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 4px solid var(--primary-orange);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-        
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-title {
-            color: var(--secondary-red);
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        /* Alert Section */
-        .alert-section {
-            background: linear-gradient(135deg, var(--secondary-red) 0%, var(--dark-red) 100%);
-            color: var(--white);
-            border-radius: 15px;
+
+        .card {
+            background: var(--card-bg);
             padding: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-top: 4px solid var(--primary-orange);
+            transition: transform 0.3s ease;
         }
-        
-        .alert-button {
-            background: var(--white);
-            color: var(--secondary-red);
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            font-size: 1.1rem;
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary-orange);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .card li::before {
+            content: "•";
+            color: var(--primary-red);
             font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
         }
-        
-        .alert-button:hover {
-            background: var(--light-orange);
-            transform: scale(1.05);
+
+        /* Architecture Section */
+        .architecture-section {
+            margin-top: 4rem;
+            background: #252525;
+            padding: 3rem;
+            border-radius: 15px;
+            border-left: 5px solid var(--primary-red);
         }
-        
+
+        .arch-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .mode-box {
+            flex: 1;
+            min-width: 300px;
+            background: #333;
+            padding: 2rem;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .mode-box.firebase {
+            border: 2px solid #4285F4; /* Google Blue */
+        }
+
+        .mode-box.local {
+            border: 2px solid var(--primary-orange);
+        }
+
+        .mode-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .firebase .mode-title { color: #4285F4; }
+        .local .mode-title { color: var(--primary-orange); }
+
         /* Footer */
         footer {
-            background: var(--text-dark);
-            color: var(--white);
             text-align: center;
-            padding: 2rem 1rem;
-            margin-top: 2rem;
+            padding: 3rem 1rem;
+            margin-top: 4rem;
+            border-top: 1px solid #333;
+            color: #888;
         }
-        
-        .firebase-status {
-            font-size: 0.9rem;
-            opacity: 0.8;
+
+        .btn-github {
+            display: inline-block;
+            background: var(--gradient-main);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
             margin-top: 1rem;
+            transition: opacity 0.3s;
         }
-        
+
+        .btn-github:hover {
+            opacity: 0.9;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
+            h1 { font-size: 2rem; }
+            .features-grid { margin-top: 1rem; }
         }
     </style>
 </head>
 <body>
+
     <header>
-        <div class="device-badge">🔴 MODE SÉCURITÉ ACTIF</div>
+        <div class="badge">Version 4.0 • PMR Compatible</div>
         <h1>Secu-Cuisine-PMR-4.0</h1>
-        <p class="subtitle">Système de sécurité intelligent pour cuisine adaptée PMR</p>
+        <p class="subtitle">Le système de sécurité autonome conçu pour la protection des personnes à mobilité réduite en cuisine. Détection de chaleur, gaz et chutes.</p>
     </header>
-    
+
     <div class="container">
-        <!-- Device Status -->
-        <section class="status-card">
-            <div class="status-indicator">
-                <div class="status-dot" id="statusDot"></div>
-                <h2>État du Dispositif</h2>
+        
+        <!-- Fonctionnalités Principales -->
+        <div class="features-grid">
+            <div class="card">
+                <h3>🔥 Détection Thermique</h3>
+                <ul>
+                    <li>Surveillance continue des plaques de cuisson.</li>
+                    <li>Détection de surchauffe anormale.</li>
+                    <li>Coupure automatique du gaz/électricité.</li>
+                    <li>Alerte visuelle et sonore immédiate.</li>
+                </ul>
             </div>
-            <p id="statusText">Connexion en cours...</p>
-            <p style="margin-top: 1rem; color: var(--gray); font-size: 0.9rem;">
-                Dernière synchronisation: <span id="lastSync">--:--</span>
+
+            <div class="card">
+                <h3>👵 Optimisation PMR</h3>
+                <ul>
+                    <li>Interface vocale simplifiée (commande mains libres).</li>
+                    <li>Alertes haptiques pour les malentendants.</li>
+                    <li>Détection de chute ou d'immobilité prolongée au sol.</li>
+                    <li>Design ergonomique sans boutons complexes.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>💨 Sécurité Gaz & Fumée</h3>
+                <ul>
+                    <li>Capteurs de monoxyde de carbone (CO).</li>
+                    <li>Détection de fuite de gaz naturel.</li>
+                    <li>Ventilation d'urgence activée automatiquement.</li>
+                    <li>Auto-test quotidien des capteurs.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Architecture Technique -->
+        <section class="architecture-section">
+            <h2 class="arch-title">Architecture & Connectivité</h2>
+            <p style="text-align: center; margin-bottom: 2rem; color: #ccc;">
+                L'appareil Secu-Cuisine-PMR-4.0 est conçu pour fonctionner dans deux modes distincts selon les besoins de l'utilisateur et la connectivité disponible.
             </p>
-        </section>
-        
-        <!-- Alert Button -->
-        <section class="alert-section">
-            <h2>⚠️ Bouton d'Alerte Urgence</h2>
-            <p>En cas de danger, appuyez pour alerter les secours</p>
-            <button class="alert-button" onclick="sendAlert()">🚨 DÉCLENCHER ALERTE</button>
-        </section>
-        
-        <!-- Features -->
-        <section class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🔥</div>
-                <h3 class="feature-title">Détection Incendie</h3>
-                <p>Senseurs thermiques et fumée connectés avec alerte automatique</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">💧</div>
-                <h3 class="feature-title">Anti-Inondation</h3>
-                <p>Détection de fuites d'eau avec coupure automatique</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">👤</div>
-                <h3 class="feature-title">Surveillance PMR</h3>
-                <p>Adapté aux personnes à mobilité réduite avec interfaces simplifiées</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3 class="feature-title">Notifications Temps Réel</h3>
-                <p>Alertes push via Firebase Cloud Messaging</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3 class="feature-title">Chiffrement End-to-End</h3>
-                <p>Données sécurisées selon standards Proton</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3 class="feature-title">Historique & Rapports</h3>
-                <p>Journal complet des événements stocké dans Firestore</p>
+
+            <div class="comparison">
+                <!-- Mode Sans Firebase (Local) -->
+                <div class="mode-box local">
+                    <span class="mode-title">Mode Local (Sans Firebase)</span>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem; color: #aaa;">Idéal pour la confidentialité maximale et la fiabilité hors-ligne.</p>
+                    <ul>
+                        <li><strong>Autonomie totale :</strong> Fonctionne même sans connexion Internet.</li>
+                        <li><strong>Réactivité instantanée :</strong> Traitement des données directement sur le microcontrôleur (ESP32/STM32).</li>
+                        <li><strong>Stockage local :</strong> Historique des événements enregistré sur carte SD interne.</li>
+                        <li><strong>Notifications locales :</strong> Sirène intégrée et notification SMS via module GSM dédié (si configuré).</li>
+                        <li><strong>Interface :</strong> Dashboard local accessible via WiFi direct (Hotspot de l'appareil).</li>
+                    </ul>
+                </div>
+
+                <!-- Mode Avec Firebase -->
+                <div class="mode-box firebase">
+                    <span class="mode-title">Mode Cloud (Avec Firebase)</span>
+                    <p style="margin-bottom: 1rem; font-size: 0.9rem; color: #aaa;">Pour le suivi à distance, l'historique long terme et les alertes familiales.</p>
+                    <ul>
+                        <li><strong>Temps réel :</strong> Mise à jour de l'état de la cuisine sur l'application mobile instantanément.</li>
+                        <li><strong>Alertes multi-utilisateurs :</strong> Notification push envoyée aux proches et aux secours en cas d'incident.</li>
+                        <li><strong>Analyse historique :</strong> Graphiques de consommation et tendances de sécurité sur le cloud.</li>
+                        <li><strong>Contrôle à distance :</strong> Possibilité de couper le gaz à distance via l'interface web.</li>
+                        <li><strong>Mises à jour OTA :</strong> Mise à jour du firmware à distance via Firebase Remote Config.</li>
+                    </ul>
+                </div>
             </div>
         </section>
+
     </div>
-    
+
     <footer>
-        <p>© 2026 Secu-Cuisine-PMR-4.0 | Système de Sécurité Intelligent</p>
-        <p class="firebase-status" id="firebaseStatus">Firebase: En attente de configuration</p>
+        <p>&copy; 2024 Projet Secu-Cuisine-PMR-4.0. Open Source sur GitHub.</p>
+        <p>Conçu pour la sécurité et l'autonomie des personnes vulnérables.</p>
+        <a href="https://github.com/votre-utilisateur/secu-cuisine-pmr" class="btn-github">Voir le code source sur GitHub</a>
     </footer>
-    
-    <script>
-        // ============================================
-        // CONFIGURATION FIREBASE - À REMPLIR
-        // ============================================
-        const firebaseConfig = {
-          apiKey: "AIzaSyB621ITNFqCnFaea86k4bujyMBAfs-lHRk",
-          authDomain: "secu-pmr-4-0.firebaseapp.com",
-          databaseURL: "https://secu-pmr-4-0-default-rtdb.europe-west1.firebasedatabase.app",
-          projectId: "secu-pmr-4-0",
-          storageBucket: "secu-pmr-4-0.firebasestorage.app",
-          messagingSenderId: "740418079174",
-          appId: "1:740418079174:web:8064f8ef688a49368c4ac7"
-        };
-        
-        // Initialiser Firebase
-        let db;
-        let auth;
-        
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            auth = firebase.auth();
-            
-            document.getElementById('firebaseStatus').textContent = 
-                '✅ Firebase: Connecté avec succès';
-            document.getElementById('statusDot').classList.add('active');
-            document.getElementById('statusText').textContent = 
-                'Dispositif connecté et opérationnel';
-            
-        } catch (error) {
-            console.error("Erreur Firebase:", error);
-            document.getElementById('firebaseStatus').textContent = 
-                '❌ Firebase: Configuration requise';
-            document.getElementById('statusText').textContent = 
-                'Veuillez configurer Firebase dans le code';
-        }
-        
-        // Fonction d'envoi d'alerte
-        async function sendAlert() {
-            const button = event.target;
-            button.textContent = '⏳ Envoi en cours...';
-            button.disabled = true;
-            
-            try {
-                const alertData = {
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    device: 'Secu-Cuisine-PMR-4.0',
-                    type: 'MANUAL_ALERT',
-                    location: 'Cuisine',
-                    status: 'ACTIVE'
-                };
-                
-                await db.collection('alerts').add(alertData);
-                
-                button.textContent = '✅ Alerte envoyée!';
-                button.style.background = '#4CAF50';
-                button.style.color = 'white';
-                
-                setTimeout(() => {
-                    button.textContent = '🚨 DÉCLENCHER ALERTE';
-                    button.style.background = 'var(--white)';
-                    button.style.color = 'var(--secondary-red)';
-                    button.disabled = false;
-                }, 3000);
-                
-            } catch (error) {
-                console.error("Erreur envoi alerte:", error);
-                button.textContent = '❌ Erreur';
-                button.disabled = false;
-            }
-        }
-        
-        // Mettre à jour l'heure de dernière synchronisation
-        function updateLastSync() {
-            const now = new Date();
-            document.getElementById('lastSync').textContent = 
-                now.toLocaleTimeString('fr-FR');
-        }
-        
-        setInterval(updateLastSync, 60000);
-        updateLastSync();
-    </script>
+
 </body>
 </html>
-
